@@ -1,0 +1,17 @@
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\bin\Debug\ESP_VolumMixer.exe.config
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\bin\Debug\ESP_VolumMixer.exe
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\bin\Debug\ESP_VolumMixer.pdb
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.csproj.AssemblyReference.cache
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\MainWindow.g.cs
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\App.g.cs
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer_MarkupCompile.cache
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer_MarkupCompile.lref
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\App.baml
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\MainWindow.baml
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.g.resources
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.Properties.Resources.resources
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.csproj.GenerateResource.cache
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.csproj.CoreCompileInputs.cache
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.exe
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.pdb
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.exe.config

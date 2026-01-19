@@ -1,0 +1,95 @@
+﻿<Window x:Class="ESP_VolumMixer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ESP_VolumMixer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="915">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <!--RowDefinition Height="80*"/-->
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="215*"/>
+            <ColumnDefinition Width="525*"/>
+            <ColumnDefinition Width="150*"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Ellipse Grid.Row="0"/>
+            <Ellipse Grid.Row="1"/>
+            <Ellipse Grid.Row="2"/>
+            <Ellipse Grid.Row="3"/>
+            <Ellipse Grid.Row="4"/>
+            <ComboBox x:Name="EncodorProcess1" Grid.Row="0" Style="{StaticResource EncoderProcessStyle}"/>
+            <ComboBox x:Name="EncodorProcess2" Grid.Row="1" Style="{StaticResource EncoderProcessStyle}"/>
+            <ComboBox x:Name="EncodorProcess3" Grid.Row="2" Style="{StaticResource EncoderProcessStyle}"/>
+            <ComboBox x:Name="EncodorProcess4" Grid.Row="3" Style="{StaticResource EncoderProcessStyle}"/>
+            <ComboBox x:Name="EncodorProcess5" Grid.Row="4" Style="{StaticResource EncoderProcessStyle}"/>
+
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="290"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Slider x:Name="PotenseonetrProcessSlider1" Grid.Column="0"/>
+            <Slider x:Name="PotenseonetrProcessSlider2" Grid.Column="1"/>
+            <Slider x:Name="PotenseonetrProcessSlider3" Grid.Column="2"/>
+            <Slider x:Name="PotenseonetrProcessSlider4" Grid.Column="3"/>
+            <TextBlock Style="{StaticResource PotenseonetrGridStyleTextBox}" Grid.Column="0" Text="{Binding Value, ElementName=PotenseonetrProcessSlider1, StringFormat='F0'}"/>
+            <TextBlock Style="{StaticResource PotenseonetrGridStyleTextBox}" Grid.Column="1" Text="{Binding Value, ElementName=PotenseonetrProcessSlider2, StringFormat='F0'}"/>
+            <TextBlock Style="{StaticResource PotenseonetrGridStyleTextBox}" Grid.Column="2" Text="{Binding Value, ElementName=PotenseonetrProcessSlider3, StringFormat='F0'}"/>
+            <TextBlock Style="{StaticResource PotenseonetrGridStyleTextBox}" Grid.Column="3" Text="{Binding Value, ElementName=PotenseonetrProcessSlider4, StringFormat='F0'}"/>
+            <ComboBox x:Name="PotenseonetrProcess1" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="0"/>
+            <ComboBox x:Name="PotenseonetrProcess2" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="1"/>
+            <ComboBox x:Name="PotenseonetrProcess3" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="2"/>
+            <ComboBox x:Name="PotenseonetrProcess4" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="3"/>
+
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="1" >
+            <!--Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions-->
+
+            <TextBlock Style="{StaticResource TextBlockProfile}"/>
+            <ComboBox Style="{StaticResource ComboboxProfile}"/>
+
+        </Grid>
+        <Border BorderBrush="White" CornerRadius="10" BorderThickness="5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="312" Margin="149,40,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="594"/>
+
+
+
+
+    </Grid>
+</Window>
