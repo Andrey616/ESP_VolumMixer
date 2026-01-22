@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NAudio.CoreAudioApi;
+
 
 namespace ESP_VolumMixer
 {
@@ -20,9 +22,14 @@ namespace ESP_VolumMixer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private DatabaseManager dbManager;
+
         public MainWindow()
         {
+
             InitializeComponent();
+            dbManager = new DatabaseManager();
+            dbManager.InitializeDatabase();
         }
     }
 }

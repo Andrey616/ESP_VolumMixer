@@ -15,3 +15,6 @@ C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.
 C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.exe
 C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.pdb
 C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_VolumMixer.exe.config
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\bin\Debug\System.Data.SQLite.dll
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\obj\Debug\ESP_Volu.26050F3D.Up2Date
+C:\Users\andre\GitKraken\ESP_VolumMixer\ESP_VolumMixer\bin\Debug\System.Data.SQLite.xml
