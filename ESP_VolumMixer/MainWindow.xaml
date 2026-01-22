@@ -87,7 +87,7 @@
             </Grid.ColumnDefinitions-->
 
             <TextBlock Style="{StaticResource TextBlockProfile}"/>
-            <ComboBox Style="{StaticResource ComboboxProfile}"/>
+            <ComboBox x:Name="ComboboxProfile" Style="{StaticResource ComboboxProfile}"/>
 
         </Grid>
         <Border Style="{StaticResource BorderMain}" />

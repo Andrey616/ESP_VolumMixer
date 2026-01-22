@@ -5,43 +5,57 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
+        <!-- 1. Grid -->
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="#191A1A"/>
         </Style>
 
+        <!-- 2. TextBox -->
         <Style TargetType="TextBox">
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
+        <!-- 3. Label -->
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
+        <!-- 4. ComboBoxItem -->
         <Style TargetType="ComboBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Background" Value="#808181"/>
+            <Setter Property="Padding" Value="5,2"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#0078D7"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
+        <!-- 5. Ellipse -->
         <Style TargetType="Ellipse">
-
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="50"/>
             <Setter Property="Height" Value="50"/>
             <Setter Property="Stroke" Value="White"/>
             <Setter Property="Grid.Column" Value="1"/>
-
         </Style>
 
-        <Style TargetType="ComboBox" x:Key="EncoderProcessStyle">
+        <!-- 6. EncoderProcessStyle -->
+        <Style x:Key="EncoderProcessStyle" TargetType="ComboBox">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="Grid.Column" Value="0"/>
             <Setter Property="Margin" Value="20,28,20,28"/>
-
         </Style>
 
+        <!-- 7. Slider -->
         <Style TargetType="Slider">
             <Setter Property="Grid.Row" Value="0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -51,55 +65,59 @@
             <Setter Property="Height" Value="260"/>
             <Setter Property="Minimum" Value="0"/>
             <Setter Property="Maximum" Value="100"/>
-            
+            <Setter Property="TickFrequency" Value="10"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
         </Style>
 
-        <Style TargetType="ComboBox" x:Key="PotenseonetrGridStyleComboBox" >
+        <!-- 8. PotenseonetrGridStyleComboBox -->
+        <Style x:Key="PotenseonetrGridStyleComboBox" TargetType="ComboBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="Grid.Row" Value="1"/>
             <Setter Property="Margin" Value="0,30,0,0"/>
-
+           
         </Style>
 
-        <Style TargetType="TextBlock" x:Key="PotenseonetrGridStyleTextBox">
+        <!-- 9. PotenseonetrGridStyleTextBox -->
+        <Style x:Key="PotenseonetrGridStyleTextBox" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Height" Value="16"/>
             <Setter Property="Grid.Row" Value="0"/>
             <Setter Property="Margin" Value="20,0,20,0"/>
             <Setter Property="Foreground" Value="White"/>
-
         </Style>
 
-        <Style TargetType="TextBlock" x:Key="TextBlockProfile" >
+        <!-- 10. TextBlockProfile -->
+        <Style x:Key="TextBlockProfile" TargetType="TextBlock">
             <Setter Property="Text" Value="Profile"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="White"/>
-
         </Style>
 
-        <Style TargetType="ComboBox" x:Key="ComboboxProfile" >
+        <!-- 11. ComboboxProfile -->
+        <Style x:Key="ComboboxProfile" TargetType="ComboBox">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="Grid.Row" Value="1"/>
             <Setter Property="Margin" Value="0,20,0,0"/>
-
+            
         </Style>
 
+        <!-- 12. Border -->
         <Style TargetType="Border">
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="CornerRadius" Value="3"/>
             <Setter Property="BorderThickness" Value="5"/>
-            
         </Style>
 
-        <Style TargetType="Border" x:Key="BorderMain">
+        <!-- 13. BorderMain -->
+        <Style x:Key="BorderMain" TargetType="Border">
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="CornerRadius" Value="1"/>
             <Setter Property="BorderThickness" Value="5"/>
@@ -110,11 +128,7 @@
             <Setter Property="Grid.RowSpan" Value="2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="600"/>
-
         </Style>
-
-
-
 
     </Application.Resources>
 </Application>

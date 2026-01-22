@@ -92,10 +92,17 @@ namespace ESP_VolumMixer
             {
                 for (int Profilesnum = 0; Profilesnum < defaultProfiles.Count; Profilesnum++)
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@name", defaultProfiles[Profilesnum]);
-                    command.Parameters.AddWithValue("@ids", defaultProcessIds[Profilesnum]);
-                    command.ExecuteNonQuery();
+                    var profile = new Profile
+                    {
+                        Name = defaultProfiles[Profilesnum],
+                        ProcessIds = defaultProcessIds[Profilesnum]
+                    };
+                    AddProfile(profile);
+
+                    //command.Parameters.Clear();
+                    //command.Parameters.AddWithValue("@name", defaultProfiles[Profilesnum]);
+                    //command.Parameters.AddWithValue("@ids", defaultProcessIds[Profilesnum]);
+                    //command.ExecuteNonQuery();
                 }
             }
         }
@@ -113,17 +120,26 @@ namespace ESP_VolumMixer
                 "zoom.exe"
             };
 
-            string sql = "INSERT OR IGNORE INTO Processes (ProcessName) VALUES (@name)";
+            //string sql = "INSERT OR IGNORE INTO Processes (ProcessName) VALUES (@name)";
 
-            using (var command = new SQLiteCommand(sql, connection))
+            foreach (string processName in defaultProcesses)
             {
-                foreach (string processName in defaultProcesses)
+                var process = new Process
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@name", processName);
-                    command.ExecuteNonQuery();
-                }
+                    NameProcess = processName
+                };
+                AddProcess(process);
             }
+
+            //using (var command = new SQLiteCommand(sql, connection))
+            //{
+            //    foreach (string processName in defaultProcesses)
+            //    {
+            //        command.Parameters.Clear();
+            //        command.Parameters.AddWithValue("@name", processName);
+            //        command.ExecuteNonQuery();
+            //    }
+            //}
         }
 
         private bool ProcessExists(SQLiteConnection connection, string processName)
@@ -205,7 +221,7 @@ namespace ESP_VolumMixer
         public List<Process> GetAllProcesses()
         {
             var processes = new List<Process>();
-            string sql = "SELECT * FROM Process";
+            string sql = "SELECT * FROM Processes";
             
             using (var connection = GetConnection())
             {
@@ -219,7 +235,7 @@ namespace ESP_VolumMixer
                         var process = new Process
                         {
                             Id = Convert.ToInt32(reader["Id"]),
-                            NameProcess = reader["Name"].ToString()
+                            NameProcess = reader["ProcessName"].ToString()
                         };
                         processes.Add(process);
                     }
