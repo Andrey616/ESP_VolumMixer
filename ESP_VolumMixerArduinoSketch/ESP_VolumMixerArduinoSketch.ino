@@ -1,4 +1,10 @@
 #include <EncButton.h>
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(2, 3);
+uint32_t Timer;
+
+#define BateryPin A4
+
 
 const int Potenseometrs[] = {A0, A1, A2, A3, A7};
 const int PotenseometrCount = sizeof(Potenseometrs) / sizeof(Potenseometrs[0]);
@@ -17,6 +23,10 @@ EncButton* encoderObjects[EncoderCount / 3];
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
+  pinMode(BateryPin, INPUT);
+
+  Timer = millis();
 
   for (int PotenseometrPin = 0; PotenseometrPin < PotenseometrCount; PotenseometrPin++) {
     pinMode(Potenseometrs[PotenseometrPin], INPUT_PULLUP);
@@ -74,10 +84,28 @@ String ReadEncoders(){
 
 }
 
+
+String ReadBatteryVolum(){
+  int rawValue = analogRead(BateryPin);
+  float voltage = rawValue * (5.0 / 1023.0) * 2.0;
+  int percentage = map(voltage * 100, 3.3 * 100, 4.2 * 100, 0, 100);
+  return String(constrain(percentage, 0, 100));
+
+  
+}
+
+
+String OldRead = "100| 100| 100| 100| 100| 100| 100| 100| 100| ";
+String NevRead;
 void loop() {
-  // put your main code here, to run repeatedly:
-  //Serial.print(ReadPotenseometrs()); 
-  //Serial.println(ReadEncoders());
+  NevRead = ReadPotenseometrs() + ReadEncoders();
+  if (millis() - Timer >= 10000 || NevRead != OldRead){
+    OldRead = NevRead;
+    NevRead += ReadBatteryVolum();
+    Serial.println(NevRead);
+    Timer = millis();
+  }
+  
   
   
 
