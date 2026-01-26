@@ -1,7 +1,8 @@
 #include <EncButton.h>
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3);
-uint32_t Timer;
+uint32_t TimerAutoPush;
+uint32_t TimerDeleyPush;
 
 #define BateryPin A4
 
@@ -14,7 +15,7 @@ const int EncoderCount = sizeof(Encoders) / sizeof(Encoders[0]);
 
 int PotenseometrsValueOld[] = {0, 0, 0, 0, 0};
 int PotenseometrsValueNev[] = {0, 0, 0, 0, 0};
-int EncoderValue[] = {0, 0, 0, 0};
+int EncoderValue[] = {115, 0, 0, 0};
 
 
 
@@ -26,7 +27,8 @@ void setup() {
 
   pinMode(BateryPin, INPUT);
 
-  Timer = millis();
+  TimerAutoPush = millis();
+  TimerDeleyPush = millis();
 
   for (int PotenseometrPin = 0; PotenseometrPin < PotenseometrCount; PotenseometrPin++) {
     pinMode(Potenseometrs[PotenseometrPin], INPUT_PULLUP);
@@ -56,7 +58,7 @@ String ReadPotenseometrs(){
 
 String ReadEncoders(){
   String RezulrReadValueEncoders = "";
-  for (int EncoderObgectPosition = 0; EncoderObgectPosition < EncoderCount / 3; EncoderObgectPosition++) {
+  for (int EncoderObgectPosition = 1; EncoderObgectPosition < (EncoderCount) / 3; EncoderObgectPosition++) {
     encoderObjects[EncoderObgectPosition]->tick();
 
     if (encoderObjects[EncoderObgectPosition]->right()) {
@@ -84,6 +86,42 @@ String ReadEncoders(){
 
 }
 
+int Mode = 100;
+int PodMode = 10;
+int Bright = 5;
+String ReadEncoderMode(){
+  String RezulrReadEncoderMode = "";
+  encoderObjects[0]->tick();
+
+  if (encoderObjects[0]->right()) {
+    Mode += 100;
+    if (Mode > 401) {Mode = 100;}
+  }
+  if (encoderObjects[0]->left()) {
+     Mode -= 100;
+    if (Mode < 100) {Mode = 400;}
+  }
+
+  if (encoderObjects[0]->click()) {
+    PodMode += 10;
+    if (PodMode > 91){PodMode = 0;}
+  }
+
+  if (encoderObjects[0]->rightH()) {
+    Bright += 1;
+    if (Bright==10){Bright = 0;}
+  }
+  if (encoderObjects[0]->leftH()) {
+    Bright -= 1;
+    if (Bright<0){Bright = 9;}
+    
+  }
+
+  EncoderValue[0] = Mode + PodMode + Bright;
+  RezulrReadEncoderMode += String(EncoderValue[0]) + "| ";
+  return RezulrReadEncoderMode;
+}
+
 
 String ReadBatteryVolum(){
   int rawValue = analogRead(BateryPin);
@@ -95,15 +133,16 @@ String ReadBatteryVolum(){
 }
 
 
-String OldRead = "100| 100| 100| 100| 100| 100| 100| 100| 100| ";
+String OldRead = " ";
 String NevRead;
 void loop() {
-  NevRead = ReadPotenseometrs() + ReadEncoders();
-  if (millis() - Timer >= 10000 || NevRead != OldRead){
+  NevRead = ReadPotenseometrs() + ReadEncoders() + ReadEncoderMode();
+  if (millis() - TimerAutoPush >= 10000 || (NevRead != OldRead && millis() - TimerDeleyPush >= 100)){
     OldRead = NevRead;
     NevRead += ReadBatteryVolum();
     Serial.println(NevRead);
-    Timer = millis();
+    TimerDeleyPush = millis();
+    TimerAutoPush = millis();
   }
   
   
