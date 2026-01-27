@@ -1,5 +1,6 @@
 #include <EncButton.h>
 #include <SoftwareSerial.h>
+#include <EEPROM.h>
 SoftwareSerial mySerial(2, 3);
 uint32_t TimerAutoPush;
 uint32_t TimerDeleyPush;
@@ -15,6 +16,10 @@ const int EncoderCount = sizeof(Encoders) / sizeof(Encoders[0]);
 int PotenseometrsValueOld[] = {0, 0, 0, 0, 0};
 int PotenseometrsValueNev[] = {0, 0, 0, 0, 0};
 int EncoderValue[] = {115, 0, 0, 0};
+
+int Mode = 100;
+int PodMode = 10;
+int Bright = 5;
 
 EncButton* encoderObjects[EncoderCount / 3]; 
 
@@ -32,6 +37,7 @@ void setup() {
   for (int EncoderPin = 0; EncoderPin < EncoderCount / 3; EncoderPin++) {
     encoderObjects[EncoderPin] = new EncButton(Encoders[EncoderPin*3], Encoders[EncoderPin*3 + 1], Encoders[EncoderPin*3 + 2]);
   }
+  readInEprom();
 }
 
 String ReadPotenseometrs(){
@@ -78,9 +84,6 @@ String ReadEncoders(){
   return RezulrReadValueEncoders;  
 }
 
-int Mode = 100;
-int PodMode = 10;
-int Bright = 5;
 String ReadEncoderMode(){
   String RezulrReadEncoderMode = "";
   encoderObjects[0]->tick();
@@ -106,7 +109,6 @@ String ReadEncoderMode(){
   if (encoderObjects[0]->leftH()) {
     Bright -= 1;
     if (Bright<0){Bright = 9;}
-    
   }
 
   EncoderValue[0] = Mode + PodMode + Bright;
@@ -124,6 +126,24 @@ String ReadBatteryVolum(){
   return String(constrain(percentage, 0, 100));
 }
 
+void SaveInEprom(){
+  for (int IdValue = 0; IdValue < 4; IdValue++){
+    EEPROM.update(IdValue, EncoderValue[IdValue]);
+  }
+  EEPROM.put(5, Mode);
+  EEPROM.put(7, PodMode);
+  EEPROM.put(9, Bright);
+}
+
+void readInEprom(){
+  for (int IdValue = 0; IdValue < 4; IdValue++){
+    EncoderValue[IdValue] = EEPROM.read(IdValue);
+  }
+  Mode = EEPROM.get(5, Mode);
+  PodMode = EEPROM.get(7, PodMode);
+  Bright = EEPROM.get(9, Bright);
+}
+
 String OldRead = " ";
 String NevRead;
 void loop() {
@@ -134,5 +154,6 @@ void loop() {
     Serial.println(NevRead);
     TimerDeleyPush = millis();
     TimerAutoPush = millis();
+    SaveInEprom();
   }
 }
