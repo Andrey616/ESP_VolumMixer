@@ -1,23 +1,22 @@
 #include <FastLED.h>
+#include "BluetoothSerial.h"
 #define LED_PIN 4
 #define LED_NUM 25
 CRGB leds[LED_NUM];
+BluetoothSerial ESP_BT;
 
 void setup() {
   // put your setup code here, to run once:
-  
-  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, LED_NUM);
-  //FastLED.setBrightness(50);
-
   Serial.begin(9600);
-  
   Serial2.begin(115200, SERIAL_8N1, 16, 17);
-  
   Serial.println("ESP готов к приему данных от Arduino...");
 
+  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, LED_NUM);
   xTaskCreatePinnedToCore(StartTaskRGBMode, "TaskRGBMode", 16384, NULL, 1, NULL, 0);
-}
 
+  ESP_BT.begin("VolumMixer", "1212");
+  Serial.println("Bluetooth готов к сопряжению");
+}
 
 int mode = 1;
 int PodMode = 1;
@@ -189,6 +188,9 @@ void ReadMessege(){
     String message = Serial2.readStringUntil('\n');
     Serial.print("Получено от Arduino: ");
     Serial.println(message);
+    if (ESP_BT.hasClient()) {
+      ESP_BT.println(message);
+    }
     char buffer[50];
     message.toCharArray(buffer, sizeof(buffer));
     int index = 0;
@@ -201,9 +203,6 @@ void ReadMessege(){
     mode = numbers[8] / 100;
     PodMode = numbers[8] % 100 / 10;
     Bright = numbers[8] % 10 * 10;
-    Serial.println(mode);
-    Serial.println(PodMode);
-    Serial.println(Bright);
     if (numbers[9] < 20){
       mode = 10;
     }
@@ -211,10 +210,5 @@ void ReadMessege(){
 }
 
 void loop() {
-
   ReadMessege();
-
-  //Serial.println("Ничего");
-  
-  //startRGB();
 }

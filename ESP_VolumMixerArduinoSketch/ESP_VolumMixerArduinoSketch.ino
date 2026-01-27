@@ -6,7 +6,6 @@ uint32_t TimerDeleyPush;
 
 #define BateryPin A4
 
-
 const int Potenseometrs[] = {A0, A1, A2, A3, A7};
 const int PotenseometrCount = sizeof(Potenseometrs) / sizeof(Potenseometrs[0]);
 
@@ -17,12 +16,9 @@ int PotenseometrsValueOld[] = {0, 0, 0, 0, 0};
 int PotenseometrsValueNev[] = {0, 0, 0, 0, 0};
 int EncoderValue[] = {115, 0, 0, 0};
 
-
-
 EncButton* encoderObjects[EncoderCount / 3]; 
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
 
   pinMode(BateryPin, INPUT);
@@ -36,24 +32,23 @@ void setup() {
   for (int EncoderPin = 0; EncoderPin < EncoderCount / 3; EncoderPin++) {
     encoderObjects[EncoderPin] = new EncButton(Encoders[EncoderPin*3], Encoders[EncoderPin*3 + 1], Encoders[EncoderPin*3 + 2]);
   }
-
 }
 
 String ReadPotenseometrs(){
   String RezulrReadValuePotenseometrs = "";
   for (int PotenseometrPin = 0; PotenseometrPin < PotenseometrCount - 1; PotenseometrPin++) {
-      PotenseometrsValueNev[PotenseometrPin] = map(analogRead(Potenseometrs[PotenseometrPin]), 16, 1023, 0, 100);
-      if (PotenseometrsValueNev[PotenseometrPin] != PotenseometrsValueOld[PotenseometrPin]){
-        PotenseometrsValueOld[PotenseometrPin] = PotenseometrsValueNev[PotenseometrPin];
-      }
-      RezulrReadValuePotenseometrs += String(PotenseometrsValueOld[PotenseometrPin]) + "| ";
+    PotenseometrsValueNev[PotenseometrPin] = map(analogRead(Potenseometrs[PotenseometrPin]), 16, 1023, 0, 100);
+    if (PotenseometrsValueNev[PotenseometrPin] != PotenseometrsValueOld[PotenseometrPin]){
+      PotenseometrsValueOld[PotenseometrPin] = PotenseometrsValueNev[PotenseometrPin];
     }
-    PotenseometrsValueNev[PotenseometrCount-1] = map(analogRead(Potenseometrs[PotenseometrCount-1]), 0, 1023, 0, 100);
-    if (PotenseometrsValueNev[PotenseometrCount-1] != PotenseometrsValueOld[PotenseometrCount-1]){
-      PotenseometrsValueOld[PotenseometrCount-1] = PotenseometrsValueNev[PotenseometrCount-1];
-    }
-    RezulrReadValuePotenseometrs += String(PotenseometrsValueOld[PotenseometrCount-1]) + "| ";
-    return RezulrReadValuePotenseometrs;
+    RezulrReadValuePotenseometrs += String(PotenseometrsValueOld[PotenseometrPin]) + "| ";
+  }
+  PotenseometrsValueNev[PotenseometrCount-1] = map(analogRead(Potenseometrs[PotenseometrCount-1]), 0, 1023, 0, 100);
+  if (PotenseometrsValueNev[PotenseometrCount-1] != PotenseometrsValueOld[PotenseometrCount-1]){
+    PotenseometrsValueOld[PotenseometrCount-1] = PotenseometrsValueNev[PotenseometrCount-1];
+  }
+  RezulrReadValuePotenseometrs += String(PotenseometrsValueOld[PotenseometrCount-1]) + "| ";
+  return RezulrReadValuePotenseometrs;
 }
 
 String ReadEncoders(){
@@ -77,13 +72,10 @@ String ReadEncoders(){
       EncoderValue[EncoderObgectPosition] -= 5;
     }
 
-    // Ограничиваем значение (опционально)
     EncoderValue[EncoderObgectPosition] = constrain(EncoderValue[EncoderObgectPosition], 0, 100);
-    
     RezulrReadValueEncoders += String(EncoderValue[EncoderObgectPosition]) + "| ";
   }
   return RezulrReadValueEncoders;  
-
 }
 
 int Mode = 100;
@@ -122,16 +114,15 @@ String ReadEncoderMode(){
   return RezulrReadEncoderMode;
 }
 
-
+float filteredValue = 0;
+float alpha = 0.2; 
 String ReadBatteryVolum(){
   int rawValue = analogRead(BateryPin);
-  float voltage = rawValue * (5.0 / 1023.0) * 2.0;
+  filteredValue = alpha * rawValue + (1 - alpha) * filteredValue;
+  float voltage = filteredValue * (5.0 / 1023.0) * 2;
   int percentage = map(voltage * 100, 3.3 * 100, 4.2 * 100, 0, 100);
   return String(constrain(percentage, 0, 100));
-
-  
 }
-
 
 String OldRead = " ";
 String NevRead;
@@ -144,10 +135,4 @@ void loop() {
     TimerDeleyPush = millis();
     TimerAutoPush = millis();
   }
-  
-  
-  
-
-
-
 }
