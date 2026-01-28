@@ -171,6 +171,24 @@ namespace ESP_VolumMixer
             }
         }
 
+        public void UpdateProfile(Profile profile)
+        {
+            string sql = @"UPDATE Profiles SET ProcessIds = @processIds WHERE Id = @id";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(sql, connection))
+                {
+                    var processIdsValue = string.IsNullOrEmpty(profile.ProcessIds) ? (object)DBNull.Value : profile.ProcessIds;
+                    command.Parameters.AddWithValue("@processIds", processIdsValue);
+                    command.Parameters.AddWithValue("@id", profile.Id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public List<Profile> GetAllProfiles()
         {
             var profiles = new List<Profile>();
@@ -197,6 +215,37 @@ namespace ESP_VolumMixer
             }
 
             return profiles;
+        }
+
+        public Profile GetProfileById(int id)
+        {
+            string sql = "SELECT * FROM Profiles WHERE Id = @id";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Profile
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString(),
+                                ProcessIds = reader["ProcessIds"] == DBNull.Value
+                                    ? null
+                                    : reader["ProcessIds"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         public void AddProcess(Process process)

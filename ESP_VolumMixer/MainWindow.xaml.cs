@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 
 
@@ -38,7 +39,6 @@ namespace ESP_VolumMixer
             RunningCheckAudio = new CancellationTokenSource();
             _ = CheckAudio(RunningCheckAudio.Token);
             AppdateComboBox();
-
         }
 
         private async Task CheckAudio(CancellationToken token)
@@ -69,11 +69,8 @@ namespace ESP_VolumMixer
                                 NameProcess = name
                             };
                             dbManager.AddProcess(myProcess);
-                            Console.WriteLine($"  Процесс : {name}");
+                            //Console.WriteLine($"  Процесс : {name}");
                             AppdateComboBox();
-
-
-
                         }
                     }
                 }
@@ -89,8 +86,7 @@ namespace ESP_VolumMixer
 
         private void AppdateComboBox()
         {
-            List<ComboBox> ListComboBox = new List<ComboBox> { EncodorProcess1, EncodorProcess2, EncodorProcess3, EncodorProcess4, PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5 };
-
+            List<ComboBox> ListComboBox = new List<ComboBox> {PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3};
             List<Process> processes = dbManager.GetAllProcesses();
             List<Profile> profiles = dbManager.GetAllProfiles();
 
@@ -122,7 +118,57 @@ namespace ESP_VolumMixer
                     if (sameProcess != null)
                     {
                         ComboBoxNow.SelectedItem = sameProcess;
-                        
+                    }
+                }
+            }
+        }
+
+        private void ClickSaveProfile(object sender, RoutedEventArgs e)
+        {
+            List<ComboBox> ListComboBox = new List<ComboBox> {PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3};
+            var selectedProfile = ComboboxProfile.SelectedItem as Profile;
+            string StringReadCombobox = "";
+            foreach (var ComboBoxNow in ListComboBox)
+            {
+                var selectedComboBox = ComboBoxNow.SelectedItem as Process;
+                if (selectedComboBox != null)
+                {
+                    StringReadCombobox += selectedComboBox.Id.ToString() + "| ";
+                }
+                else
+                {
+                    StringReadCombobox += "Null| ";
+                }
+
+            }
+
+            if (selectedProfile != null) { 
+                var updatedProfileProcess = new Profile
+                {
+                    Id = selectedProfile.Id,
+                    ProcessIds = StringReadCombobox
+                };
+                dbManager.UpdateProfile(updatedProfileProcess);
+            }
+        }
+
+        private void ProcessFromProfile(object sender, SelectionChangedEventArgs e)
+        {
+            List<ComboBox> ListComboBox = new List<ComboBox> {PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3 };
+            List<Process> processes = dbManager.GetAllProcesses();
+            var selectedProfile = ComboboxProfile.SelectedItem as Profile;
+            if (selectedProfile != null) { 
+                string[] ProcessNowProfile = selectedProfile.ProcessIds.Split(new[] { "| " }, StringSplitOptions.None);
+
+                for (var ComboBoxNow = 0; ComboBoxNow < ListComboBox.Count; ComboBoxNow++)
+                {
+                    ListComboBox[ComboBoxNow].ItemsSource = processes;
+                    ListComboBox[ComboBoxNow].DisplayMemberPath = "NameProcess";
+                    ListComboBox[ComboBoxNow].SelectedValuePath = "Id";
+                    if (ProcessNowProfile[ComboBoxNow] != null)
+                    {
+                        int processId = int.Parse(ProcessNowProfile[ComboBoxNow]);
+                        ListComboBox[ComboBoxNow].SelectedValue = processId;
                     }
                 }
             }

@@ -41,10 +41,11 @@
             <ComboBox x:Name="EncodorProcess1" Grid.Row="0" Style="{StaticResource EncoderProcessStyle}"/>
             <ComboBox x:Name="EncodorProcess2" Grid.Row="1" Style="{StaticResource EncoderProcessStyle}"/>
             <ComboBox x:Name="EncodorProcess3" Grid.Row="2" Style="{StaticResource EncoderProcessStyle}"/>
-            <ComboBox x:Name="EncodorProcess4" Grid.Row="3" Style="{StaticResource EncoderProcessStyle}"/>
+            <!--ComboBox x:Name="EncodorProcess4" Grid.Row="3" Style="{StaticResource EncoderProcessStyle}"/-->
 
 
         </Grid>
+        
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="290"/>
@@ -73,27 +74,15 @@
             <ComboBox x:Name="PotenseonetrProcess3" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="2"/>
             <ComboBox x:Name="PotenseonetrProcess4" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="3"/>
             <ComboBox x:Name="PotenseonetrProcess5" Style="{StaticResource PotenseonetrGridStyleComboBox}" Grid.Column="4"/>
-
         </Grid>
+        
         <Grid Grid.Column="2" Grid.Row="1" >
-            <!--Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions-->
-
             <TextBlock Style="{StaticResource TextBlockProfile}"/>
-            <ComboBox x:Name="ComboboxProfile" Style="{StaticResource ComboboxProfile}"/>
-
+            <ComboBox x:Name="ComboboxProfile" Style="{StaticResource ComboboxProfile}" SelectionChanged="ProcessFromProfile" />
+            <Button Style="{StaticResource SaveProfile}" Click="ClickSaveProfile"/>
         </Grid>
+        
         <Border Style="{StaticResource BorderMain}" />
-
-
-
-
+        
     </Grid>
 </Window>

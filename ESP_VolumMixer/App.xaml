@@ -43,6 +43,7 @@
             <Setter Property="Height" Value="50"/>
             <Setter Property="Stroke" Value="White"/>
             <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
         </Style>
 
         <!-- 6. EncoderProcessStyle -->
@@ -107,6 +108,19 @@
             <Setter Property="Grid.Row" Value="1"/>
             <Setter Property="Margin" Value="0,20,0,0"/>
             
+        </Style>
+        
+        <!-- 11. SaveProfile -->
+        <Style x:Key="SaveProfile" TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Margin" Value="0,60,0,0"/>
+            <Setter Property="Content" Value="Save Profile"/>
+            <Setter Property="Background" Value="#FF73C778"/>
+
         </Style>
 
         <!-- 12. Border -->
