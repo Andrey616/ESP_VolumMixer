@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -29,6 +30,7 @@ namespace ESP_VolumMixer
     {
         private DatabaseManager dbManager;
         private CancellationTokenSource RunningCheckAudio;
+        private CancellationTokenSource RunningConnektedPort;
 
         public MainWindow()
         {
@@ -38,6 +40,7 @@ namespace ESP_VolumMixer
             dbManager.InitializeDatabase();
             RunningCheckAudio = new CancellationTokenSource();
             _ = CheckAudio(RunningCheckAudio.Token);
+            Task.Run(() => ConnektedPort());
             AppdateComboBox();
         }
 
@@ -77,12 +80,64 @@ namespace ESP_VolumMixer
             }
         }
 
+        String portValidate = "COM1";
+
+        private async Task ConnektedPort()
+        {
+            while (true)
+            {
+                try
+                {
+                    using (SerialPort port = new SerialPort(portValidate, 9600))
+                    {
+                        port.ReadTimeout = 600;
+                        port.Open();
+                        string data = port.ReadLine();
+                        Console.WriteLine(port.ReadLine());
+                    }
+                }
+                catch
+                {
+                    portValidate = PortSearch();
+                }
+            }
+        }
+
+        String PortSearch()
+        {
+            Console.WriteLine("Поиск порта:");
+            foreach (string portName in SerialPort.GetPortNames())
+            {
+                try
+                {
+                    Console.WriteLine(portName);
+                    using (SerialPort port = new SerialPort(portName, 9600))
+                    {
+                        port.ReadTimeout = 600;
+                        port.Open();
+                        string data = port.ReadLine();
+                        port.Close();
+                        if (data.Substring(0, 11) == "VolumMixer-")
+                        {
+                            return portName;
+                        }
+                    }
+                }
+                catch
+                { Console.WriteLine("Не тот"); }
+            }
+            Console.WriteLine("Не найден нужный порт");
+            return "COM1";
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             RunningCheckAudio.Cancel();
             RunningCheckAudio.Dispose();
             base.OnClosed(e);
         }
+
+
 
         private void AppdateComboBox()
         {

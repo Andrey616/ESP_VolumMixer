@@ -189,7 +189,7 @@ void ReadMessege(){
     Serial.print("Получено от Arduino: ");
     Serial.println(message);
     if (ESP_BT.hasClient()) {
-      ESP_BT.println(message);
+      ESP_BT.println("VolumMixer-" + message);
     }
     char buffer[50];
     message.toCharArray(buffer, sizeof(buffer));
