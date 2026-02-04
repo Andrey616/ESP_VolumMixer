@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|c:\\users\\andre\\gitkraken\\esp_volummixer\\esp_volummixer\\databasemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|solutionrelative:databasemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{931EEF76-1644-442D-BD76-BF32A6F7DD39}|ESP_VolumMixer.csproj|C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\modeldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,17 +30,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 227,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DatabaseManager.cs",
               "DocumentMoniker": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\DatabaseManager.cs",
               "RelativeDocumentMoniker": "DatabaseManager.cs",
               "ToolTip": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\DatabaseManager.cs",
               "RelativeToolTip": "DatabaseManager.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAvwG0AAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAcwHMAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-22T09:36:42.364Z",
               "EditorCaption": ""
@@ -59,7 +59,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
@@ -67,23 +67,18 @@
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-01-18T10:59:15.798Z"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 273,
-          "SelectedChildIndex": 1,
-          "Children": [
+            },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "App.xaml",
               "DocumentMoniker": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",
               "ToolTip": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-01-19T09:55:40.873Z"
+              "WhenOpened": "2026-01-19T09:55:40.873Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -93,7 +88,7 @@
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\andre\\GitKraken\\ESP_VolumMixer\\ESP_VolumMixer\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAawCoAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAAACEAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-18T10:59:15.288Z",
               "EditorCaption": ""

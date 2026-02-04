@@ -79,11 +79,11 @@ namespace ESP_VolumMixer
 
             var defaultProcessIds = new List<string>
             {
-                "1, 1, 1, 1, 1, 1, 1, 1, 1",
-                "1, 1, 1, 1, 1, 1, 1, 1, 1",
-                "1, 1, 1, 1, 1, 1, 1, 1, 1",
-                "1, 1, 1, 1, 1, 1, 1, 1, 1",
-                "1, 1, 1, 1, 1, 1, 1, 1, 1"
+                "1| 1| 1| 1| 1| 1| 1| 1| 1",
+                "1| 1| 1| 1| 1| 1| 1| 1| 1",
+                "1| 1| 1| 1| 1| 1| 1| 1| 1",
+                "1| 1| 1| 1| 1| 1| 1| 1| 1",
+                "1| 1| 1| 1| 1| 1| 1| 1| 1"
             };
 
             string sql = "INSERT INTO Profiles (Name, ProcessIds) VALUES (@name, @ids)";
@@ -111,13 +111,9 @@ namespace ESP_VolumMixer
         {
             var defaultProcesses = new List<string>
             {
-                "chrome.exe",
-                "firefox.exe",
-                "msedge.exe",
-                "opera.exe",
-                "discord.exe",
-                "teams.exe",
-                "zoom.exe"
+                "          ",
+                "chrome",
+                "firefox"
             };
 
             //string sql = "INSERT OR IGNORE INTO Processes (ProcessName) VALUES (@name)";

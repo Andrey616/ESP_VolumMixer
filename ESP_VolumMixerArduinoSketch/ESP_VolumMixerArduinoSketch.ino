@@ -148,7 +148,7 @@ String OldRead = " ";
 String NevRead;
 void loop() {
   NevRead = ReadPotenseometrs() + ReadEncoders() + ReadEncoderMode();
-  if (millis() - TimerAutoPush >= 500 || (NevRead != OldRead && millis() - TimerDeleyPush >= 100)){
+  if (millis() - TimerAutoPush >= 100 || (NevRead != OldRead && millis() - TimerDeleyPush >= 100)){
     OldRead = NevRead;
     NevRead += ReadBatteryVolum();
     Serial.println(NevRead);

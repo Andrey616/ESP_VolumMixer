@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,14 +25,13 @@ using System.Xml.Linq;
 
 namespace ESP_VolumMixer
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+    
     public partial class MainWindow : Window
     {
         private DatabaseManager dbManager;
         private CancellationTokenSource RunningCheckAudio;
         private CancellationTokenSource RunningConnektedPort;
+        List<string> NameProcessInComboboxes = new List<string> { "", "", "", "", "", "", "", "" };
 
         public MainWindow()
         {
@@ -40,7 +41,7 @@ namespace ESP_VolumMixer
             dbManager.InitializeDatabase();
             RunningCheckAudio = new CancellationTokenSource();
             _ = CheckAudio(RunningCheckAudio.Token);
-            Task.Run(() => ConnektedPort());
+            _ = Task.Run(() => ConnektedPort());
             AppdateComboBox();
         }
 
@@ -63,7 +64,7 @@ namespace ESP_VolumMixer
                         var session = sessions[i];
                         uint processId = session.GetProcessID;
                         var process = System.Diagnostics.Process.GetProcessById((int)processId);
-                        string name = process.ProcessName + ".exe";
+                        string name = process.ProcessName;
 
                         if (process != null)
                         {
@@ -80,55 +81,91 @@ namespace ESP_VolumMixer
             }
         }
 
-        String portValidate = "COM1";
+        string port = "COM1";
+
+        bool Check(string p)
+        {
+            try
+            {
+                using (var sp = new SerialPort(p, 115200))
+                {
+                    sp.ReadTimeout = 200;
+                    sp.Open();
+                    return sp.ReadLine().StartsWith("VolumMixer-");
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private async Task ConnektedPort()
         {
             while (true)
             {
-                try
+                if (!Check(port))
                 {
-                    using (SerialPort port = new SerialPort(portValidate, 9600))
-                    {
-                        port.ReadTimeout = 600;
-                        port.Open();
-                        string data = port.ReadLine();
-                        Console.WriteLine(port.ReadLine());
-                    }
+                    port = SerialPort.GetPortNames().Where(Check).FirstOrDefault() ?? "COM1";
+                    if (port == "COM1") { continue; }
                 }
-                catch
-                {
-                    portValidate = PortSearch();
-                }
-            }
-        }
 
-        String PortSearch()
-        {
-            Console.WriteLine("Поиск порта:");
-            foreach (string portName in SerialPort.GetPortNames())
-            {
                 try
                 {
-                    Console.WriteLine(portName);
-                    using (SerialPort port = new SerialPort(portName, 9600))
+                    using (var sp = new SerialPort(port, 115200))
                     {
-                        port.ReadTimeout = 600;
-                        port.Open();
-                        string data = port.ReadLine();
-                        port.Close();
-                        if (data.Substring(0, 11) == "VolumMixer-")
+                        sp.ReadTimeout = 1000;
+                        sp.Open();
+                        while (true)
                         {
-                            return portName;
+                            try { UppVolumProc(sp.ReadLine()); }
+                            catch (IOException) { break; }
                         }
                     }
                 }
-                catch
-                { Console.WriteLine("Не тот"); }
+                catch { }
+
+                Console.WriteLine("Переподключение...");
+                Thread.Sleep(3000);
             }
-            Console.WriteLine("Не найден нужный порт");
-            return "COM1";
         }
+
+        
+        
+        void UppVolumProc(String Data)
+        {
+            var enumerator = new MMDeviceEnumerator();
+            var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+            int[] VolumList = Array.ConvertAll(Data.Split(new[] { "VolumMixer-", "| " }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+            foreach (var device in devices)
+            {
+                var sessionManager = device.AudioSessionManager;
+                var sessions = sessionManager.Sessions;
+
+                for (int i = 0; i < sessions.Count; i++)
+                {
+                    var session = sessions[i];
+                    uint processId = session.GetProcessID;
+                    var process = System.Diagnostics.Process.GetProcessById((int)processId);
+                    string name = process.ProcessName;
+
+
+                    if (NameProcessInComboboxes.Contains(process.ProcessName))
+                    {
+                        for (int idProList = 0; idProList < NameProcessInComboboxes.Count; idProList++)
+                        {
+                            if (process.ProcessName == NameProcessInComboboxes[idProList])
+                            {
+                                session.SimpleAudioVolume.Volume = VolumList[idProList] / 100f;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+
 
         protected override void OnClosed(EventArgs e)
         {
@@ -141,39 +178,55 @@ namespace ESP_VolumMixer
 
         private void AppdateComboBox()
         {
-            List<ComboBox> ListComboBox = new List<ComboBox> {PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3};
+            ClickSaveProfile(null, null);
+            List<ComboBox> ListComboBox = new List<ComboBox>{PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3,PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3};
+
             List<Process> processes = dbManager.GetAllProcesses();
             List<Profile> profiles = dbManager.GetAllProfiles();
 
-            object selectedItemProfile = ComboboxProfile.SelectedItem;
+            int? selectedProfileId = null;
+            if (ComboboxProfile.SelectedItem is Profile selectedProfile)
+            {
+                selectedProfileId = selectedProfile.Id;
+            }
+            else if (ComboboxProfile.SelectedValue != null)
+            {
+                selectedProfileId = ComboboxProfile.SelectedValue as int?;
+            }
+
+            var selectedProcessIds = new Dictionary<ComboBox, int?>();
+            foreach (var comboBox in ListComboBox)
+            {
+                int? processId = null;
+                if (comboBox.SelectedItem is Process selectedProcess)
+                {
+                    processId = selectedProcess.Id;
+                }
+                else if (comboBox.SelectedValue != null)
+                {
+                    processId = comboBox.SelectedValue as int?;
+                }
+                selectedProcessIds[comboBox] = processId;
+            }
 
             ComboboxProfile.ItemsSource = profiles;
             ComboboxProfile.DisplayMemberPath = "Name";
             ComboboxProfile.SelectedValuePath = "Id";
-            if (selectedItemProfile is Profile oldProfile)
+
+            if (selectedProfileId.HasValue)
             {
-                var sameProfile = profiles.FirstOrDefault(p => p.Id == oldProfile.Id);
-                if (sameProfile != null)
-                {
-                    ComboboxProfile.SelectedItem = sameProfile;
-                }
+                ComboboxProfile.SelectedValue = selectedProfileId.Value;
             }
 
-            foreach (var ComboBoxNow in ListComboBox)
+            foreach (var comboBox in ListComboBox)
             {
-                object selectedItem = ComboBoxNow.SelectedItem;
-                
-                ComboBoxNow.ItemsSource = processes;
-                ComboBoxNow.DisplayMemberPath = "NameProcess";
-                ComboBoxNow.SelectedValuePath = "Id";
-                    
-                if (selectedItem is Process oldProcess)
+                comboBox.ItemsSource = processes;
+                comboBox.DisplayMemberPath = "NameProcess";
+                comboBox.SelectedValuePath = "Id";
+
+                if (selectedProcessIds.TryGetValue(comboBox, out int? processId) && processId.HasValue)
                 {
-                    var sameProcess = processes.FirstOrDefault(p => p.Id == oldProcess.Id);
-                    if (sameProcess != null)
-                    {
-                        ComboBoxNow.SelectedItem = sameProcess;
-                    }
+                    comboBox.SelectedValue = processId.Value;
                 }
             }
         }
@@ -183,12 +236,15 @@ namespace ESP_VolumMixer
             List<ComboBox> ListComboBox = new List<ComboBox> {PotenseonetrProcess1, PotenseonetrProcess2, PotenseonetrProcess3, PotenseonetrProcess4, PotenseonetrProcess5, EncodorProcess1, EncodorProcess2, EncodorProcess3};
             var selectedProfile = ComboboxProfile.SelectedItem as Profile;
             string StringReadCombobox = "";
-            foreach (var ComboBoxNow in ListComboBox)
-            {
-                var selectedComboBox = ComboBoxNow.SelectedItem as Process;
+            for (int ComboBoxNow = 0; ComboBoxNow < ListComboBox.Count(); ComboBoxNow++) 
+                {
+                    var selectedComboBox = ListComboBox[ComboBoxNow].SelectedItem as Process;
                 if (selectedComboBox != null)
                 {
                     StringReadCombobox += selectedComboBox.Id.ToString() + "| ";
+                    NameProcessInComboboxes[ComboBoxNow] = selectedComboBox.NameProcess.ToString();
+                    
+                    
                 }
                 else
                 {
